@@ -34,9 +34,9 @@
         /* تأثيرات المجلة الفخمة (Page Snapping) */
         /* ------------------------------------------------ */
         .magazine-container {
-            /* جعل الوعاء قابلاً للتمرير عمودياً */
+            /* يمنع التمرير الافتراضي للجسم ويطبق التمرير على هذا الوعاء */
             overflow-y: scroll;
-            /* تطبيق خاصية التقاط التمرير (Snapping) - هذا هو مفتاح الحركة الأوتوماتيكية */
+            /* خاصية التقاط التمرير: تجعل الصفحة تتوقف أوتوماتيكياً عند كل قسم */
             scroll-snap-type: y mandatory;
             height: calc(100vh - 60px); /* يملأ ارتفاع الشاشة مع ترك مساحة لشريط التنقل */
             max-width: 900px;
@@ -48,14 +48,22 @@
             scroll-snap-align: start;
             /* لضمان أن كل صفحة تأخذ ارتفاع الشاشة بالكامل */
             min-height: 100vh;
-            /* إعادة تطبيق إطار المجلة ولكن على المحتوى الداخلي */
+            /* إعادة تطبيق إطار المجلة */
             padding: 40px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             border-radius: 4px;
-            margin: 0; /* إلغاء الهامش الخارجي */
-            width: 100%; /* تأكيد العرض */
+            margin: 0;
+            width: 100%;
             box-sizing: border-box;
             background-color: #fff;
+
+            /* ------------------------------------------------ */
+            /* الخاصية الإبداعية: تقسيم المحتوى لصفحتين متجاورتين (تأثير الكتاب) */
+            /* ------------------------------------------------ */
+            columns: 2; 
+            column-gap: 50px; /* المسافة البيضاء في المنتصف كـ 'طية' الكتاب */
+            column-rule: 1px solid #ddd; /* خط فاصل خفيف يزيد الإحساس بالصفحتين */
+            text-align: justify;
         }
 
         body {
@@ -72,6 +80,9 @@
             font-weight: 700;
             line-height: 1.4;
             color: var(--primary);
+            /* لمنع العناوين من الانقسام بين الأعمدة */
+            break-after: avoid;
+            -webkit-column-break-after: avoid; 
         }
         h1 { 
             font-size: 3.5rem; 
@@ -85,19 +96,8 @@
             margin-top: 40px; 
             color: var(--accent); 
         }
-        h3 { 
-            font-size: 1.6rem; 
-            color: var(--primary); 
-            border-right: 4px solid var(--accent); 
-            padding-right: 15px; 
-            margin-top: 25px;
-        }
-
-        p {
-            margin-bottom: 1.5rem;
-            text-align: justify;
-        }
         
+        /* ... باقي التنسيقات (النافيقيشن، الاقتباسات، إلخ) ... */
         .magazine-quote {
             background-color: #f7f7f7;
             border-right: 8px solid var(--accent);
@@ -110,9 +110,12 @@
             color: var(--text-dark);
             text-align: center;
             line-height: 1.4;
+            /* لمنع الاقتباس من الانقسام بين الأعمدة */
+            break-inside: avoid;
+            -webkit-column-break-inside: avoid;
         }
-
-        /* الناف بار/شريط التنقل (ثابت في الأعلى) */
+        
+        /* شريط التنقل (ثابت في الأعلى) */
         .nav-bar {
             position: sticky;
             top: 0;
@@ -120,19 +123,23 @@
             background-color: var(--primary);
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
             padding: 10px 0;
-            height: 60px; /* لتحديد الارتفاع اللازم للـ calc() في magazine-container */
+            height: 60px;
         }
-        
-        /* ... باقي التنسيقات (الجداول، التجاوب، إلخ) ... */
-
-        @media (max-width: 768px) {
-            .page {
-                padding: 20px;
-            }
-            h1 { font-size: 2.5rem; }
-            h2 { font-size: 1.8rem; }
-            .magazine-quote { font-size: 1.4rem; }
-            /* ... باقي التجاوب ... */
+        .nav-container {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .nav-item {
+            color: var(--text-light);
+            text-decoration: none;
+            font-family: var(--font-sans);
+            font-weight: 300;
+            padding: 5px 15px;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
         }
     </style>
 </head>
